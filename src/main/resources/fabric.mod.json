@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "emitrades",
+  "version": "${version}",
+
+  "name": "EMI Trades",
+  "description": "Villager trades for EMI.",
+  "authors": [
+    "pkstDev"
+  ],
+  "contact": {
+    "sources": "https://github.com/pkstDev/EMITrades"
+  },
+
+  "license": "MIT",
+  "icon": "assets/emitrades/icon.png",
+
+  "environment": "client",
+  "entrypoints": {
+    "emi": [
+      "io.github.pkstdev.emitrades.EMITradesPlugin"
+    ]
+  },
+  "accessWidener" : "emitrades.accesswidener",
+
+  "depends": {
+    "fabricloader": ">=0.14.9",
+    "fabric-api": "*",
+    "minecraft": "~1.19",
+    "java": ">=17",
+    "emi": "*"
+  }
+}

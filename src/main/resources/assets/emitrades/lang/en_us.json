@@ -1,0 +1,28 @@
+{
+  "emi.category.emitrades.villager_trades": "Villager Trades",
+
+  "emi.emitrades.random_colored": "Randomly Colored",
+  "emi.emitrades.random_structure": "Random Structure",
+  "emi.emitrades.random_effect": "Random Status Effects",
+  "emi.emitrades.random_enchantment": "Randomly Enchanted",
+
+  "emi.emitrades.profession.lvl.1": "Novice",
+  "emi.emitrades.profession.lvl.2": "Apprentice",
+  "emi.emitrades.profession.lvl.3": "Journeyman",
+  "emi.emitrades.profession.lvl.4": "Expert",
+  "emi.emitrades.profession.lvl.5": "Master",
+
+  "emi.emitrades.profession.armorer": "Armorer",
+  "emi.emitrades.profession.butcher": "Butcher",
+  "emi.emitrades.profession.cartographer": "Cartographer",
+  "emi.emitrades.profession.cleric": "Cleric",
+  "emi.emitrades.profession.farmer": "Farmer",
+  "emi.emitrades.profession.fisherman": "Fisherman",
+  "emi.emitrades.profession.fletcher": "Fletcher",
+  "emi.emitrades.profession.leatherworker": "Leatherworker",
+  "emi.emitrades.profession.librarian": "Librarian",
+  "emi.emitrades.profession.mason": "Mason",
+  "emi.emitrades.profession.shepherd": "Shepherd",
+  "emi.emitrades.profession.toolsmith": "Toolsmith",
+  "emi.emitrades.profession.weaponsmith": "Weaponsmith"
+}
