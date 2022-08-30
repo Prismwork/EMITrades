@@ -37,7 +37,7 @@ public class VillagerTrade implements EmiRecipe {
         this.inputs = new ArrayList<>();
         this.outputs = new ArrayList<>();
         this.id = id;
-        this.title = EmiPort.translatable("emi.emitrades.profession." + profile.profession().id())
+        this.title = EmiPort.translatable("emi.emitrades.profession." + profile.profession().getId())
                 .append(" - ").append(EmiPort.translatable("emi.emitrades.profession.lvl." + profile.level()));
         TradeOffers.Factory offer = profile.offer();
         if (offer instanceof TradeOffers.BuyForOneEmeraldFactory factory) {
@@ -98,7 +98,7 @@ public class VillagerTrade implements EmiRecipe {
 
     @Override
     public @Nullable Identifier getId() {
-        return new Identifier("emi", "emitrades/villager_trades/" + profile.profession().id() + "_" + id);
+        return new Identifier("emi", "emitrades/villager_trades/" + profile.profession().getId() + "_" + id);
     }
 
     @Override
@@ -137,9 +137,10 @@ public class VillagerTrade implements EmiRecipe {
             outputSlot = outputSlot.appendTooltip(EmiPort.translatable("emi.emitrades.random_effect").formatted(Formatting.YELLOW));
         } else if (profile.offer() instanceof TradeOffers.SellMapFactory) {
             outputSlot = outputSlot.appendTooltip(EmiPort.translatable("emi.emitrades.random_structure").formatted(Formatting.YELLOW));
-        } else if (profile.offer() instanceof TradeOffers.EnchantBookFactory || profile.offer() instanceof TradeOffers.SellEnchantedToolFactory) {
-            outputSlot = outputSlot.appendTooltip(EmiPort.translatable("emi.emitrades.random_enchantment").formatted(Formatting.YELLOW));
         }
+//        else if (profile.offer() instanceof TradeOffers.EnchantBookFactory || profile.offer() instanceof TradeOffers.SellEnchantedToolFactory) {
+//            outputSlot = outputSlot.appendTooltip(EmiPort.translatable("emi.emitrades.random_enchantment").formatted(Formatting.YELLOW));
+//        }
         widgets.add(outputSlot);
     }
 }
