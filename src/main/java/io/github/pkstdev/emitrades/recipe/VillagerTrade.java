@@ -37,7 +37,7 @@ public class VillagerTrade implements EmiRecipe {
         this.inputs = new ArrayList<>();
         this.outputs = new ArrayList<>();
         this.id = id;
-        this.title = EmiPort.translatable("emi.emitrades.profession." + profile.profession().id())
+        this.title = EmiPort.translatable("entity.minecraft.villager." + profile.profession().id().substring(profile.profession().id().lastIndexOf(":") + 1))
                 .append(" - ").append(EmiPort.translatable("emi.emitrades.profession.lvl." + profile.level()));
         TradeOffers.Factory offer = profile.offer();
         if (offer instanceof TradeOffers.BuyForOneEmeraldFactory factory) {
@@ -84,6 +84,10 @@ public class VillagerTrade implements EmiRecipe {
             inputs.add(0, EmiStack.of(Items.EMERALD, factory.price));
             inputs.add(1, EmiStack.EMPTY);
             outputs.add(0, EmiStack.of(factory.sell));
+        } else if (offer instanceof EMITradesPlugin.FakeFactory factory) {
+            inputs.add(0, factory.first.emi());
+            inputs.add(1, factory.second.emi());
+            outputs.add(0, factory.sell.emi());
         } else {
             inputs.add(0, EmiStack.EMPTY);
             inputs.add(1, EmiStack.EMPTY);
@@ -98,7 +102,7 @@ public class VillagerTrade implements EmiRecipe {
 
     @Override
     public @Nullable Identifier getId() {
-        return new Identifier("emi", "emitrades/villager_trades/" + profile.profession().id() + "_" + id);
+        return new Identifier("emi", "emitrades/villager_trades/" + profile.profession().id().substring(profile.profession().id().lastIndexOf(":") + 1) + "_" + id);
     }
 
     @Override
