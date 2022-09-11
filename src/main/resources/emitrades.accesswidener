@@ -26,3 +26,4 @@ accessible field net/minecraft/village/TradeOffers$SellDyedArmorFactory price I
 accessible field net/minecraft/village/TradeOffers$TypeAwareBuyForOneEmeraldFactory map Ljava/util/Map;
 accessible field net/minecraft/village/TradeOffers$TypeAwareBuyForOneEmeraldFactory count I
 transitive-accessible class net/minecraft/village/TradeOffers$EnchantBookFactory
+accessible method net/minecraft/village/VillagerProfession <init> (Ljava/lang/String;Lnet/minecraft/world/poi/PointOfInterestType;Lcom/google/common/collect/ImmutableSet;Lcom/google/common/collect/ImmutableSet;Lnet/minecraft/sound/SoundEvent;)V

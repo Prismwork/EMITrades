@@ -24,5 +24,7 @@
   "emi.emitrades.profession.mason": "Mason",
   "emi.emitrades.profession.shepherd": "Shepherd",
   "emi.emitrades.profession.toolsmith": "Toolsmith",
-  "emi.emitrades.profession.weaponsmith": "Weaponsmith"
+  "emi.emitrades.profession.weaponsmith": "Weaponsmith",
+
+  "emi.emitrades.placeholder.wandering_trader": "Wandering Trader"
 }
