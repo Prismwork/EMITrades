@@ -19,6 +19,7 @@ repositories {
 		name = "TerraformersMC"
 		url = "https://maven.terraformersmc.com/"
 	}
+    mavenCentral()
 }
 
 dependencies {
@@ -31,6 +32,8 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	modImplementation "dev.emi:emi:${project.emi_version}"
+
+    implementation include("com.moandjiezana.toml:toml4j:0.7.2")
 
 	// Uncomment the following line to enable the deprecated Fabric API modules. 
 	// These are included in the Fabric API production distribution and allow you to update your mod to the latest modules at a later more convenient time.

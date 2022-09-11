@@ -10,35 +10,47 @@ import dev.emi.emi.api.stack.ListEmiIngredient;
 import dev.emi.emi.api.widget.SlotWidget;
 import dev.emi.emi.api.widget.WidgetHolder;
 import io.github.pkstdev.emitrades.EMITradesPlugin;
-import io.github.pkstdev.emitrades.util.TradeProfile;
+import io.github.pkstdev.emitrades.util.EntityEmiStack;
+import io.github.pkstdev.emitrades.util.ITradeProfile;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.SuspiciousStewItem;
 import net.minecraft.text.MutableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.village.TradeOffers;
+import net.minecraft.village.VillagerProfession;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class VillagerTrade implements EmiRecipe {
-    private final TradeProfile profile;
+    private final ITradeProfile profile;
     private final List<EmiIngredient> inputs;
     private final List<EmiStack> outputs;
+    private final List<EmiIngredient> catalysts;
     private final int id;
     private final MutableText title;
 
-    public VillagerTrade(TradeProfile profile, int id) {
+    public VillagerTrade(ITradeProfile profile, int id) {
         this.profile = profile;
         this.inputs = new ArrayList<>();
         this.outputs = new ArrayList<>();
+        this.catalysts = profile.villager() != null ?
+                List.of(EntityEmiStack.ofScaled(profile.villager(), 12.0f)) : List.of();
         this.id = id;
-        this.title = EmiPort.translatable("entity.minecraft.villager." + profile.profession().id().substring(profile.profession().id().lastIndexOf(":") + 1))
-                .append(" - ").append(EmiPort.translatable("emi.emitrades.profession.lvl." + profile.level()));
+        VillagerProfession internalProf = profile.profession();
+        if (internalProf.equals(EMITradesPlugin.WANDERING_TRADER_PLACEHOLDER)) {
+            this.title = EmiPort.translatable("emi.emitrades.placeholder.wandering_trader");
+        } else {
+            this.title = EmiPort.translatable("entity.minecraft.villager." + profile.profession().id().substring(profile.profession().id().lastIndexOf(":") + 1))
+                    .append(" - ").append(EmiPort.translatable("emi.emitrades.profession.lvl." + profile.level()));
+        }
         TradeOffers.Factory offer = profile.offer();
         if (offer instanceof TradeOffers.BuyForOneEmeraldFactory factory) {
             inputs.add(0, EmiStack.of(factory.buy, factory.price));
@@ -53,7 +65,7 @@ public class VillagerTrade implements EmiRecipe {
             inputs.add(1, EmiStack.EMPTY);
             ItemStack stack = new ItemStack(Items.SUSPICIOUS_STEW, 1);
             SuspiciousStewItem.addEffectToStew(stack, factory.effect, factory.duration);
-            outputs.add(0, EmiStack.of(stack));
+            outputs.add(0, stack.emi());
         } else if (offer instanceof TradeOffers.ProcessItemFactory factory) {
             inputs.add(0, EmiStack.of(Items.EMERALD, factory.price));
             inputs.add(1, EmiStack.of(factory.secondBuy, factory.secondCount));
@@ -61,7 +73,7 @@ public class VillagerTrade implements EmiRecipe {
         } else if (offer instanceof TradeOffers.SellEnchantedToolFactory factory) {
             inputs.add(0, EmiStack.of(Items.EMERALD, Math.min(factory.basePrice + 5, 64)));
             inputs.add(1, EmiStack.EMPTY);
-            outputs.add(0, EmiStack.of(factory.tool));
+            outputs.add(0, factory.tool.emi());
         } else if (offer instanceof TradeOffers.TypeAwareBuyForOneEmeraldFactory factory) {
             List<EmiStack> stacks = new ArrayList<>();
             factory.map.values().forEach(item -> stacks.add(EmiStack.of(item)));
@@ -96,6 +108,11 @@ public class VillagerTrade implements EmiRecipe {
     }
 
     @Override
+    public List<EmiIngredient> getCatalysts() {
+        return catalysts;
+    }
+
+    @Override
     public EmiRecipeCategory getCategory() {
         return EMITradesPlugin.VILLAGER_TRADES;
     }
@@ -118,7 +135,9 @@ public class VillagerTrade implements EmiRecipe {
     @Override
     public int getDisplayWidth() {
         TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-        return Math.max(86, textRenderer.getWidth(title) + 2);
+        int extraWidth = catalysts.isEmpty() ? 0 : 21;
+        return (catalysts.isEmpty() || !EMITradesPlugin.CONFIG.enable3DVillagerModelInRecipes) ? Math.max(86, textRenderer.getWidth(title) + 2) :
+                Math.max(extraWidth + 85, extraWidth + textRenderer.getWidth(title));
     }
 
     @Override
@@ -129,12 +148,31 @@ public class VillagerTrade implements EmiRecipe {
     @Override
     public void addWidgets(WidgetHolder widgets) {
         TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-        widgets.addText(EmiPort.ordered(title),
-                (getDisplayWidth() - textRenderer.getWidth(title)) / 2, 0, 16777215, true);
-        widgets.addSlot(inputs.get(0), getDisplayWidth() / 2 - 42, 10);
-        widgets.addSlot(inputs.get(1), getDisplayWidth() / 2 - 22, 10);
-        widgets.addTexture(EmiTexture.EMPTY_ARROW, getDisplayWidth() / 2 - 3, 10);
-        SlotWidget outputSlot = new SlotWidget(outputs.get(0), getDisplayWidth() / 2 + 22, 10).recipeContext(this);
+        if (catalysts.isEmpty() || !EMITradesPlugin.CONFIG.enable3DVillagerModelInRecipes) {
+            widgets.addText(EmiPort.ordered(title),
+                    (getDisplayWidth() - textRenderer.getWidth(title)) / 2, 0, 16777215, true);
+            widgets.addSlot(inputs.get(0), getDisplayWidth() / 2 - 42, 10);
+            widgets.addSlot(inputs.get(1), getDisplayWidth() / 2 - 22, 10);
+            widgets.addTexture(EmiTexture.EMPTY_ARROW, getDisplayWidth() / 2 - 3, 10);
+            SlotWidget outputSlot = new SlotWidget(outputs.get(0), getDisplayWidth() / 2 + 22, 10).recipeContext(this);
+            wrapOutput(widgets, outputSlot);
+        } else {
+            SlotWidget villagerSlot = new SlotWidget(catalysts.get(0), 1, 6).drawBack(false);
+            if (profile.villager() instanceof VillagerEntity villager) {
+                villagerSlot.appendTooltip(EmiPort.translatable("emi.emitrades.profession.lvl." + villager.getVillagerData().getLevel()).formatted(Formatting.YELLOW));
+            }
+            widgets.add(villagerSlot);
+            widgets.addText(EmiPort.ordered(title),
+                    21, 0, 16777215, true);
+            widgets.addSlot(inputs.get(0), 21, 10);
+            widgets.addSlot(inputs.get(1), 41, 10);
+            widgets.addTexture(EmiTexture.EMPTY_ARROW, 60, 10);
+            SlotWidget outputSlot = new SlotWidget(outputs.get(0), 85, 10).recipeContext(this);
+            wrapOutput(widgets, outputSlot);
+        }
+    }
+
+    private void wrapOutput(WidgetHolder widgets, SlotWidget outputSlot) {
         if (profile.offer() instanceof TradeOffers.SellDyedArmorFactory) {
             outputSlot = outputSlot.appendTooltip(EmiPort.translatable("emi.emitrades.random_colored").formatted(Formatting.YELLOW));
         } else if (profile.offer() instanceof TradeOffers.SellPotionHoldingItemFactory || profile.offer() instanceof TradeOffers.SellSuspiciousStewFactory) {
