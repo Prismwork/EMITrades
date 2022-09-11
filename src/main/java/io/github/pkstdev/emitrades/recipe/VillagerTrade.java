@@ -45,7 +45,7 @@ public class VillagerTrade implements EmiRecipe {
         this.id = id;
         VillagerProfession internalProf = profile.profession();
         if (internalProf.equals(EMITradesPlugin.WANDERING_TRADER_PLACEHOLDER)) {
-            this.title = EmiPort.translatable("emi.emitrades.placeholder.wandering_trader");
+            this.title = EmiPort.translatable("entity.minecraft.villager." + profile.placeholder.wandering_trader");
         } else {
             this.title = EmiPort.translatable("entity.minecraft.villager." + profile.profession().getId().substring(profile.profession().getId().lastIndexOf(":") + 1))
                     .append(" - ").append(EmiPort.translatable("emi.emitrades.profession.lvl." + profile.level()));
