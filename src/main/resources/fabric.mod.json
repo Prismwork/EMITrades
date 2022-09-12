@@ -6,7 +6,8 @@
   "name": "EMI Trades",
   "description": "Villager trades for EMI.",
   "authors": [
-    "pkstDev"
+    "pkstDev",
+    "JoostMSoftware"
   ],
   "contact": {
     "sources": "https://github.com/pkstDev/EMITrades"
