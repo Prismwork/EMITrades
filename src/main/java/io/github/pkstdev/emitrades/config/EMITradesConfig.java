@@ -1,6 +1,5 @@
 package io.github.pkstdev.emitrades.config;
 
-
 import com.moandjiezana.toml.Toml;
 import com.moandjiezana.toml.TomlWriter;
 
@@ -9,7 +8,8 @@ import java.io.IOException;
 
 public class EMITradesConfig {
     public static Config load(File file) {
-        if (!file.getName().endsWith(".toml")) throw new RuntimeException("Failed to read config");
+        if (!file.getName().endsWith(".toml"))
+            throw new RuntimeException("Failed to read config");
         Config cfg = null;
         Toml toml = new Toml();
         if (file.exists()) {

@@ -6,7 +6,4 @@ An addon for EMI adding Villager Trade support.
 
 * Showing the costs and payments
 * Showing the level required for a trade
-
-### Planned
-
-* Adding wandering trader trade support
+* Wandering trader trade support

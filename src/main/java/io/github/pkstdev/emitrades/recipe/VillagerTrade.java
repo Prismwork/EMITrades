@@ -11,17 +11,19 @@ import dev.emi.emi.api.widget.SlotWidget;
 import dev.emi.emi.api.widget.WidgetHolder;
 import io.github.pkstdev.emitrades.EMITradesPlugin;
 import io.github.pkstdev.emitrades.util.EntityEmiStack;
-import io.github.pkstdev.emitrades.util.ITradeProfile;
+import io.github.pkstdev.emitrades.util.TradeProfile;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.SuspiciousStewItem;
+import net.minecraft.registry.Registries;
 import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.village.TradeOffers;
 import net.minecraft.village.VillagerProfession;
 import org.jetbrains.annotations.Nullable;
@@ -30,14 +32,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VillagerTrade implements EmiRecipe {
-    private final ITradeProfile profile;
+    private final TradeProfile profile;
     private final List<EmiIngredient> inputs;
     private final List<EmiStack> outputs;
     private final List<EmiIngredient> catalysts;
     private final int id;
     private final MutableText title;
 
-    public VillagerTrade(ITradeProfile profile, int id) {
+    public VillagerTrade(TradeProfile profile, int id) {
         this.profile = profile;
         this.inputs = new ArrayList<>();
         this.outputs = new ArrayList<>();
@@ -65,7 +67,7 @@ public class VillagerTrade implements EmiRecipe {
             inputs.add(1, EmiStack.EMPTY);
             ItemStack stack = new ItemStack(Items.SUSPICIOUS_STEW, 1);
             SuspiciousStewItem.addEffectToStew(stack, factory.effect, factory.duration);
-            outputs.add(0, stack.emi());
+            outputs.add(0, EmiStack.of(stack));
         } else if (offer instanceof TradeOffers.ProcessItemFactory factory) {
             inputs.add(0, EmiStack.of(Items.EMERALD, factory.price));
             inputs.add(1, EmiStack.of(factory.secondBuy, factory.secondCount));
@@ -73,7 +75,7 @@ public class VillagerTrade implements EmiRecipe {
         } else if (offer instanceof TradeOffers.SellEnchantedToolFactory factory) {
             inputs.add(0, EmiStack.of(Items.EMERALD, Math.min(factory.basePrice + 5, 64)));
             inputs.add(1, EmiStack.EMPTY);
-            outputs.add(0, factory.tool.emi());
+            outputs.add(0, EmiStack.of(factory.tool));
         } else if (offer instanceof TradeOffers.TypeAwareBuyForOneEmeraldFactory factory) {
             List<EmiStack> stacks = new ArrayList<>();
             factory.map.values().forEach(item -> stacks.add(EmiStack.of(item)));
@@ -97,9 +99,9 @@ public class VillagerTrade implements EmiRecipe {
             inputs.add(1, EmiStack.EMPTY);
             outputs.add(0, EmiStack.of(factory.sell));
         } else if (offer instanceof EMITradesPlugin.FakeFactory factory) {
-            inputs.add(0, factory.first.emi());
-            inputs.add(1, factory.second.emi());
-            outputs.add(0, factory.sell.emi());
+            inputs.add(0, EmiStack.of(factory.first));
+            inputs.add(1, EmiStack.of(factory.second));
+            outputs.add(0, EmiStack.of(factory.sell));
         } else {
             inputs.add(0, EmiStack.EMPTY);
             inputs.add(1, EmiStack.EMPTY);
@@ -180,7 +182,16 @@ public class VillagerTrade implements EmiRecipe {
         } else if (profile.offer() instanceof TradeOffers.SellMapFactory) {
             outputSlot = outputSlot.appendTooltip(EmiPort.translatable("emi.emitrades.random_structure").formatted(Formatting.YELLOW));
         } else if (profile.offer() instanceof TradeOffers.EnchantBookFactory || profile.offer() instanceof TradeOffers.SellEnchantedToolFactory) {
-            outputSlot = outputSlot.appendTooltip(EmiPort.translatable("emi.emitrades.random_enchantment").formatted(Formatting.YELLOW));
+            List<Enchantment> list
+                    = Registries.ENCHANTMENT.stream().filter(Enchantment::isAvailableForEnchantedBookOffer).toList();
+            if (!list.isEmpty()) {
+                outputSlot = outputSlot.appendTooltip(Text.translatable("emi.emitrades.enchantments.possible")
+                        .formatted(Formatting.AQUA));
+                for (Enchantment enchantment : list) {
+                    outputSlot = outputSlot.appendTooltip(Text.literal("- ")
+                            .append(Text.translatable(enchantment.getTranslationKey())).formatted(Formatting.GRAY));
+                }
+            }
         }
         widgets.add(outputSlot);
     }

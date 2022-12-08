@@ -19,10 +19,10 @@ import net.minecraft.entity.passive.WanderingTraderEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.registry.Registries;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.random.Random;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.village.TradeOffer;
 import net.minecraft.village.TradeOffers;
 import net.minecraft.village.VillagerProfession;
@@ -52,9 +52,9 @@ public class EMITradesPlugin implements EmiPlugin {
         CONFIG = EMITradesConfig.load(CONFIG_FILE);
         registry.addCategory(VILLAGER_TRADES);
         Random random = Random.create();
-        for (VillagerProfession profession : Registry.VILLAGER_PROFESSION) {
+        for (VillagerProfession profession : Registries.VILLAGER_PROFESSION) {
             VillagerEntity villager = (VillagerEntity)
-                    Registry.ENTITY_TYPE.get(new Identifier("minecraft", "villager")).create(MinecraftClient.getInstance().world);
+                    Registries.ENTITY_TYPE.get(new Identifier("minecraft", "villager")).create(MinecraftClient.getInstance().world);
             if (villager != null) {
                 villager.setVillagerData(villager.getVillagerData().withProfession(profession).withLevel(5));
                 registry.addWorkstation(VILLAGER_TRADES, EntityEmiStack.ofScaled(villager, 8.0f));
@@ -65,13 +65,13 @@ public class EMITradesPlugin implements EmiPlugin {
             int level = 0;
             while (level < 5) {
                 VillagerEntity villager1 = (VillagerEntity)
-                        Registry.ENTITY_TYPE.get(new Identifier("minecraft", "villager")).create(MinecraftClient.getInstance().world);
+                        Registries.ENTITY_TYPE.get(new Identifier("minecraft", "villager")).create(MinecraftClient.getInstance().world);
                 if (villager1 != null) {
                     villager1.setVillagerData(villager1.getVillagerData().withProfession(profession).withLevel(level + 1));
                 }
                 for (TradeOffers.Factory offer : offers.get(level + 1)) {
                     if (isVanillaFactory(offer)) {
-                        registry.addRecipe(new VillagerTrade(new TradeProfile(profession, offer, level + 1, villager1), id.get()));
+                        registry.addRecipe(new VillagerTrade(new TradeProfile.DefaultImpl(profession, offer, level + 1, villager1), id.get()));
                         id.getAndIncrement();
                     } else {
                         try {
@@ -87,7 +87,7 @@ public class EMITradesPlugin implements EmiPlugin {
                             }
                             int finalLevel = level;
                             genOffers.forEach(tradeOffer -> {
-                                registry.addRecipe(new VillagerTrade(new TradeProfile(profession, new FakeFactory(tradeOffer), finalLevel + 1, villager1), id.get()));
+                                registry.addRecipe(new VillagerTrade(new TradeProfile.DefaultImpl(profession, new FakeFactory(tradeOffer), finalLevel + 1, villager1), id.get()));
                                 id.getAndIncrement();
                             });
                         } catch (Exception ignored) {}
@@ -96,14 +96,14 @@ public class EMITradesPlugin implements EmiPlugin {
                 level++;
             }
         }
-        WanderingTraderEntity wanderingTrader = (WanderingTraderEntity) Registry.ENTITY_TYPE.get(new Identifier("minecraft", "wandering_trader"))
+        WanderingTraderEntity wanderingTrader = (WanderingTraderEntity) Registries.ENTITY_TYPE.get(new Identifier("minecraft", "wandering_trader"))
                 .create(MinecraftClient.getInstance().world);
         registry.addWorkstation(VILLAGER_TRADES, EntityEmiStack.of(wanderingTrader));
         AtomicInteger wanderingTraderId = new AtomicInteger();
         TradeOffers.WANDERING_TRADER_TRADES.forEach((lvl, offers) -> {
             for (TradeOffers.Factory offer : offers) {
                 if (isVanillaFactory(offer)) {
-                    registry.addRecipe(new VillagerTrade(new TradeProfile(WANDERING_TRADER_PLACEHOLDER, offer, lvl, wanderingTrader), wanderingTraderId.get()));
+                    registry.addRecipe(new VillagerTrade(new TradeProfile.DefaultImpl(WANDERING_TRADER_PLACEHOLDER, offer, lvl, wanderingTrader), wanderingTraderId.get()));
                     wanderingTraderId.getAndIncrement();
                 } else {
                     try {
@@ -119,7 +119,7 @@ public class EMITradesPlugin implements EmiPlugin {
                         }
                         int finalLevel = lvl;
                         genOffers.forEach(tradeOffer -> {
-                            registry.addRecipe(new VillagerTrade(new TradeProfile(WANDERING_TRADER_PLACEHOLDER, new FakeFactory(tradeOffer), finalLevel, wanderingTrader), wanderingTraderId.get()));
+                            registry.addRecipe(new VillagerTrade(new TradeProfile.DefaultImpl(WANDERING_TRADER_PLACEHOLDER, new FakeFactory(tradeOffer), finalLevel, wanderingTrader), wanderingTraderId.get()));
                             wanderingTraderId.getAndIncrement();
                         });
                     } catch (Exception ignored) {}
@@ -142,11 +142,11 @@ public class EMITradesPlugin implements EmiPlugin {
     }
 
     private int compareOffers(@NotNull TradeOffer a, @NotNull TradeOffer b) {
-        int diff = Registry.ITEM.getRawId(a.getOriginalFirstBuyItem().getItem()) - Registry.ITEM.getRawId(b.getOriginalFirstBuyItem().getItem());
+        int diff = Registries.ITEM.getRawId(a.getOriginalFirstBuyItem().getItem()) - Registries.ITEM.getRawId(b.getOriginalFirstBuyItem().getItem());
         if (diff != 0) return diff;
-        diff = Registry.ITEM.getRawId(a.getSecondBuyItem().getItem()) - Registry.ITEM.getRawId(b.getSecondBuyItem().getItem());
+        diff = Registries.ITEM.getRawId(a.getSecondBuyItem().getItem()) - Registries.ITEM.getRawId(b.getSecondBuyItem().getItem());
         if (diff != 0) return diff;
-        diff = Registry.ITEM.getRawId(a.getSellItem().getItem()) - Registry.ITEM.getRawId(b.getSellItem().getItem());
+        diff = Registries.ITEM.getRawId(a.getSellItem().getItem()) - Registries.ITEM.getRawId(b.getSellItem().getItem());
         return diff;
     }
 
