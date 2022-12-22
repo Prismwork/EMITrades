@@ -19,6 +19,14 @@ repositories {
 		name = "TerraformersMC"
 		url = "https://maven.terraformersmc.com/"
 	}
+    maven {
+        name = "Nova Committee - Release"
+        url = "https://maven.nova-committee.cn/releases/"
+    }
+    maven {
+        name = "Nova Committee - Snapshot"
+        url = "https://maven.nova-committee.cn/snapshots/"
+    }
     mavenCentral()
 }
 
@@ -38,7 +46,8 @@ dependencies {
 
 	modImplementation "dev.emi:emi:${project.emi_version}"
 
-    implementation include("com.moandjiezana.toml:toml4j:0.7.2")
+    implementation include("io.github.prismwork:prismconfig:0.1.1:all")
+    // implementation include("com.moandjiezana.toml:toml4j:0.7.2")
 }
 
 processResources {

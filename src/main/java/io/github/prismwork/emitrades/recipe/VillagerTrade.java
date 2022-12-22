@@ -1,4 +1,4 @@
-package io.github.pkstdev.emitrades.recipe;
+package io.github.prismwork.emitrades.recipe;
 
 import dev.emi.emi.EmiPort;
 import dev.emi.emi.api.recipe.EmiRecipe;
@@ -9,9 +9,9 @@ import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.stack.ListEmiIngredient;
 import dev.emi.emi.api.widget.SlotWidget;
 import dev.emi.emi.api.widget.WidgetHolder;
-import io.github.pkstdev.emitrades.EMITradesPlugin;
-import io.github.pkstdev.emitrades.util.EntityEmiStack;
-import io.github.pkstdev.emitrades.util.TradeProfile;
+import io.github.prismwork.emitrades.EMITradesPlugin;
+import io.github.prismwork.emitrades.util.EntityEmiStack;
+import io.github.prismwork.emitrades.util.TradeProfile;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.enchantment.Enchantment;

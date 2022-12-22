@@ -1,4 +1,4 @@
-package io.github.pkstdev.emitrades.util;
+package io.github.prismwork.emitrades.util;
 
 import net.minecraft.entity.passive.MerchantEntity;
 import net.minecraft.village.TradeOffers;

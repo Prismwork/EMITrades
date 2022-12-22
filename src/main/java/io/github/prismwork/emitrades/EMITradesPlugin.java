@@ -1,14 +1,14 @@
-package io.github.pkstdev.emitrades;
+package io.github.prismwork.emitrades;
 
 import com.google.common.collect.ImmutableSet;
 import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.stack.EmiStack;
-import io.github.pkstdev.emitrades.config.EMITradesConfig;
-import io.github.pkstdev.emitrades.recipe.VillagerTrade;
-import io.github.pkstdev.emitrades.util.EntityEmiStack;
-import io.github.pkstdev.emitrades.util.TradeProfile;
+import io.github.prismwork.emitrades.config.EMITradesConfig;
+import io.github.prismwork.emitrades.recipe.VillagerTrade;
+import io.github.prismwork.emitrades.util.EntityEmiStack;
+import io.github.prismwork.emitrades.util.TradeProfile;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
@@ -45,7 +45,7 @@ public class EMITradesPlugin implements EmiPlugin {
     public static final EmiRecipeCategory VILLAGER_TRADES
             = new EmiRecipeCategory(new Identifier("emitrades", "villager_trades"), EmiStack.of(Items.EMERALD));
     public static EMITradesConfig.Config CONFIG;
-    private static final File CONFIG_FILE = FabricLoader.getInstance().getConfigDir().resolve("emitrades.toml").toFile();
+    private static final File CONFIG_FILE = FabricLoader.getInstance().getConfigDir().resolve("emitrades.json5").toFile();
 
     @Override
     public void register(EmiRegistry registry) {

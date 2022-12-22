@@ -1,4 +1,4 @@
-package io.github.pkstdev.emitrades.util;
+package io.github.prismwork.emitrades.util;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.emi.emi.EmiPort;
