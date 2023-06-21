@@ -7,6 +7,7 @@ import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.screen.tooltip.RemainderTooltipComponent;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.Mouse;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.tooltip.TooltipComponent;
 import net.minecraft.client.render.DiffuseLighting;
@@ -29,18 +30,15 @@ import java.util.List;
 
 public class EntityEmiStack extends EmiStack {
     private final @Nullable Entity entity;
-    private final EntityEntry entry;
     private final double scale;
 
     protected EntityEmiStack(@Nullable Entity entity) {
         this.entity = entity;
-        this.entry = new EntityEntry(entity);
         this.scale = 8.0f;
     }
 
     protected EntityEmiStack(@Nullable Entity entity, double scale) {
         this.entity = entity;
-        this.entry = new EntityEntry(entity);
         this.scale = scale;
     }
 
@@ -66,7 +64,7 @@ public class EntityEmiStack extends EmiStack {
     }
 
     @Override
-    public void render(MatrixStack matrices, int x, int y, float delta, int flags) {
+    public void render(DrawContext draw, int x, int y, float delta, int flags) {
         if (entity != null) {
             if (entity instanceof LivingEntity living)
                 renderEntity(x + 8, (int) (y + 8 + scale), scale, living);
@@ -83,11 +81,6 @@ public class EntityEmiStack extends EmiStack {
     @Override
     public Object getKey() {
         return entity;
-    }
-
-    @Override
-    public Entry<?> getEntry() {
-        return entry;
     }
 
     @Override
@@ -224,16 +217,5 @@ public class EntityEmiStack extends EmiStack {
         matrixStack.pop();
         RenderSystem.applyModelViewMatrix();
         DiffuseLighting.enableGuiDepthLighting();
-    }
-
-    public static class EntityEntry extends Entry<Entity> {
-        public EntityEntry(Entity value) {
-            super(value);
-        }
-
-        @Override
-        public Class<? extends Entity> getType() {
-            return getValue().getType().getBaseClass();
-        }
     }
 }
