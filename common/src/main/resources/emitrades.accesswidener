@@ -1,0 +1,29 @@
+accessWidener   v1  named
+
+# Trade offers
+accessible class net/minecraft/village/TradeOffers$EnchantBookFactory
+
+accessible field net/minecraft/village/TradeOffers$BuyForOneEmeraldFactory buy Lnet/minecraft/item/Item;
+accessible field net/minecraft/village/TradeOffers$BuyForOneEmeraldFactory price I
+accessible field net/minecraft/village/TradeOffers$SellItemFactory sell Lnet/minecraft/item/ItemStack;
+accessible field net/minecraft/village/TradeOffers$SellItemFactory price I
+accessible field net/minecraft/village/TradeOffers$SellItemFactory count I
+accessible field net/minecraft/village/TradeOffers$SellSuspiciousStewFactory effect Lnet/minecraft/entity/effect/StatusEffect;
+accessible field net/minecraft/village/TradeOffers$SellSuspiciousStewFactory duration I
+accessible field net/minecraft/village/TradeOffers$ProcessItemFactory secondBuy Lnet/minecraft/item/ItemStack;
+accessible field net/minecraft/village/TradeOffers$ProcessItemFactory sell Lnet/minecraft/item/ItemStack;
+accessible field net/minecraft/village/TradeOffers$ProcessItemFactory secondCount I
+accessible field net/minecraft/village/TradeOffers$ProcessItemFactory price I
+accessible field net/minecraft/village/TradeOffers$ProcessItemFactory sellCount I
+accessible field net/minecraft/village/TradeOffers$SellEnchantedToolFactory tool Lnet/minecraft/item/ItemStack;
+accessible field net/minecraft/village/TradeOffers$SellEnchantedToolFactory basePrice I
+accessible field net/minecraft/village/TradeOffers$SellPotionHoldingItemFactory sell Lnet/minecraft/item/ItemStack;
+accessible field net/minecraft/village/TradeOffers$SellPotionHoldingItemFactory sellCount I
+accessible field net/minecraft/village/TradeOffers$SellPotionHoldingItemFactory price I
+accessible field net/minecraft/village/TradeOffers$SellPotionHoldingItemFactory secondBuy Lnet/minecraft/item/Item;
+accessible field net/minecraft/village/TradeOffers$SellPotionHoldingItemFactory secondCount I
+accessible field net/minecraft/village/TradeOffers$SellMapFactory price I
+accessible field net/minecraft/village/TradeOffers$SellDyedArmorFactory sell Lnet/minecraft/item/Item;
+accessible field net/minecraft/village/TradeOffers$SellDyedArmorFactory price I
+accessible field net/minecraft/village/TradeOffers$TypeAwareBuyForOneEmeraldFactory map Ljava/util/Map;
+accessible field net/minecraft/village/TradeOffers$TypeAwareBuyForOneEmeraldFactory count I

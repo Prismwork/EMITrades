@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "emitrades",
+  "version": "${version}",
+
+  "name": "EMI Trades",
+  "description": "Villager trades for EMI.",
+  "authors": [
+    "Flamarine"
+  ],
+  "contact": {
+    "sources": "https://github.com/Prismwork/EMITrades"
+  },
+
+  "license": "MIT",
+  "icon": "icon.png",
+
+  "environment": "client",
+  "entrypoints": {
+    "emi": [
+      "io.github.prismwork.emitrades.EMITradesPlugin"
+    ]
+  },
+
+  "depends": {
+    "fabricloader": ">=0.14.21",
+    "fabric-api": "*",
+    "minecraft": "~1.20",
+    "java": ">=17",
+    "emi": ">=1.0.0+1.20"
+  }
+}
