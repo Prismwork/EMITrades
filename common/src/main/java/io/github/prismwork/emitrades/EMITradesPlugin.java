@@ -31,6 +31,8 @@ import net.minecraft.village.VillagerProfession;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.TreeSet;
@@ -38,6 +40,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @EmiEntrypoint
 public class EMITradesPlugin implements EmiPlugin {
+    public static final Logger LOGGER = LoggerFactory.getLogger("EMI Trades");
     public static final VillagerProfession WANDERING_TRADER_PLACEHOLDER = new VillagerProfession(
             "wandering_trader",
             entry -> false,
@@ -130,6 +133,7 @@ public class EMITradesPlugin implements EmiPlugin {
                 }
             }
         });
+        LOGGER.info("Reloaded.");
     }
 
     private static boolean isVanillaFactory(TradeOffers.Factory offer) {

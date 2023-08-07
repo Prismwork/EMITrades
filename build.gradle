@@ -17,7 +17,7 @@ subprojects {
         // The following line declares the yarn mappings you may select this one as well.
         mappings "net.fabricmc:yarn:${rootProject.minecraft_version}+build.${rootProject.yarn_mappings}:v2"
 
-        implementation include("io.github.prismwork:prismconfig:0.1.1:all")
+        implementation(include("org.quiltmc.parsers:json:0.2.1"))
     }
 }
 
@@ -36,8 +36,8 @@ allprojects {
             url = "https://maven.terraformersmc.com/"
         }
         maven {
-            name = "Nova Committee - Release"
-            url = "https://maven.nova-committee.cn/releases/"
+            name = "QuiltMC"
+            url = "https://maven.quiltmc.org/repository/release/"
         }
     }
 
