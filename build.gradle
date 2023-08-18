@@ -33,7 +33,7 @@ subprojects {
             modLoaders.add(project.name)
 
             modrinth {
-                accessToken = System.getenv("MODRINTH_API_KEY")
+                accessToken = providers.environmentVariable("MODRINTH_API_KEY")
                 projectId = "j2HhbEE7"
                 minecraftVersions.add(rootProject.minecraft_version)
             }
