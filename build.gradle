@@ -28,6 +28,7 @@ subprojects {
         publishMods {
             displayName = "[${project.name.toUpperCase(Locale.ROOT)} ${rootProject.minecraft_version}] ${rootProject.mod_version}"
             file = remapJar.archiveFile
+            version = "${project.name}-${project.version}"
             changelog = file('../CHANGELOG.md').text
             type = project.mod_version.contains("alpha") ? ALPHA :
                     project.mod_version.contains("beta") ? BETA : STABLE
