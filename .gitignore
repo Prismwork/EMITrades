@@ -1,4 +1,5 @@
 build/
+.architectury-transformer/
 *.ipr
 run/
 *.iws

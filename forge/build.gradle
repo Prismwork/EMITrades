@@ -29,6 +29,9 @@ dependencies {
 
     modImplementation "dev.emi:emi-forge:${rootProject.emi_version}+${rootProject.minecraft_version}"
 
+    minecraftLibraries("org.quiltmc.parsers:json:0.2.1")
+    include("org.quiltmc.parsers:json:0.2.1")
+
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
 }
@@ -46,17 +49,17 @@ shadowJar {
     exclude "architectury.common.json"
 
     configurations = [project.configurations.shadowCommon]
-    classifier "dev-shadow"
+    archiveClassifier = "dev-shadow"
 }
 
 remapJar {
     input.set shadowJar.archiveFile
     dependsOn shadowJar
-    classifier null
+    archiveClassifier = null
 }
 
 jar {
-    classifier "dev"
+    archiveClassifier = "dev"
 }
 
 sourcesJar {

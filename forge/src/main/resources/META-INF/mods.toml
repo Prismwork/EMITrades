@@ -7,7 +7,7 @@ license = "MIT"
 modId = "emitrades"
 version = "${version}"
 displayName = "EMI Trades"
-authors = "Flamarine"
+authors = "Prismwork, Flamarine"
 description = '''
 Villager trades for EMI.
 '''
