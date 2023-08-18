@@ -33,7 +33,7 @@ subprojects {
             modLoaders.add(project.name)
 
             modrinth {
-                accessToken = providers.environmentVariable("MODRINTH_API_KEY")
+                accessToken = System.getenv("MODRINTH_API_KEY")
                 projectId = "j2HhbEE7"
                 minecraftVersions.add(rootProject.minecraft_version)
             }
@@ -60,7 +60,7 @@ allprojects {
         }
     }
 
-    tasks.withType(JavaCompile) {
+    tasks.withType(JavaCompile).configureEach {
         options.encoding = "UTF-8"
         options.release = 17
     }
