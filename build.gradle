@@ -37,12 +37,6 @@ subprojects {
                 projectId = "j2HhbEE7"
                 minecraftVersions.add(rootProject.minecraft_version)
             }
-
-            github {
-                accessToken = providers.environmentVariable("GITHUB_TOKEN")
-                repository = "Prismwork/EMITrades"
-                commitish = "xplat/1.20.1"
-            }
         }
     }
 }
