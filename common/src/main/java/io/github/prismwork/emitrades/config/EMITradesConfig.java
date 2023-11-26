@@ -7,7 +7,7 @@ import org.quiltmc.parsers.json.JsonWriter;
 import java.io.*;
 
 public class EMITradesConfig {
-    @SuppressWarnings({"SwitchStatementWithTooFewBranches", "ConstantValue"})
+    @SuppressWarnings({"SwitchStatementWithTooFewBranches"})
     public static Config load(File file) {
         if (!file.getName().endsWith(".json5"))
             throw new RuntimeException("Failed to read config");

@@ -1,7 +1,7 @@
 plugins {
     id "architectury-plugin" version "3.4-SNAPSHOT"
     id "dev.architectury.loom" version "1.3-SNAPSHOT" apply false
-    id "me.modmuss50.mod-publish-plugin" version "0.3.4" apply false
+    id "me.modmuss50.mod-publish-plugin" version "0.4.5" apply false
 }
 
 architectury {
@@ -26,18 +26,20 @@ subprojects {
 
     if (project.name != "common") {
         publishMods {
-            displayName = "[${project.name.toUpperCase(Locale.ROOT)} ${rootProject.minecraft_version}] ${rootProject.mod_version}"
             file = remapJar.archiveFile
-            version = "${project.name}-${project.version}"
             changelog = file('../CHANGELOG.md').text
             type = project.mod_version.contains("alpha") ? ALPHA :
                     project.mod_version.contains("beta") ? BETA : STABLE
-            modLoaders.add(project.name)
-            if (modLoaders.toString().contains("fabric")) modLoaders.add("quilt")
 
             modrinth {
                 accessToken = providers.environmentVariable("MODRINTH_API_KEY")
                 projectId = "j2HhbEE7"
+                minecraftVersions.add(rootProject.minecraft_version)
+            }
+
+            curseforge {
+                accessToken = providers.environmentVariable("CURSEFORGE_API_KEY")
+                projectId = "735523"
                 minecraftVersions.add(rootProject.minecraft_version)
             }
         }

@@ -36,6 +36,13 @@ dependencies {
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
 }
 
+publishMods {
+    displayName = "[Forge/NeoForge ${rootProject.minecraft_version}] ${rootProject.mod_version}"
+    version = "forge-${project.version}"
+    modLoaders.add("forge")
+    modLoaders.add("neoforge")
+}
+
 processResources {
     inputs.property "version", project.version
 
