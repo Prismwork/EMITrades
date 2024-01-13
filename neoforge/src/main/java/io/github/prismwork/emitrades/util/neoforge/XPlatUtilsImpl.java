@@ -1,6 +1,6 @@
-package io.github.prismwork.emitrades.util.forge;
+package io.github.prismwork.emitrades.util.neoforge;
 
-import net.minecraftforge.fml.loading.FMLPaths;
+import net.neoforged.fml.loading.FMLPaths;
 
 import java.nio.file.Path;
 

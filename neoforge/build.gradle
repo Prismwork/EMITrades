@@ -4,16 +4,11 @@ plugins {
 
 architectury {
     platformSetupLoomIde()
-    forge()
+    neoForge()
 }
 
 loom {
     accessWidenerPath = project(":common").loom.accessWidenerPath
-
-    forge {
-        convertAccessWideners = true
-        extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
-    }
 }
 
 configurations {
@@ -21,25 +16,34 @@ configurations {
     shadowCommon // Don't use shadow from the shadow plugin since it *excludes* files.
     compileClasspath.extendsFrom common
     runtimeClasspath.extendsFrom common
-    developmentForge.extendsFrom common
+    developmentNeoForge.extendsFrom common
+}
+
+repositories {
+    maven {
+        url "https://maven.neoforged.net/releases/"
+        content {
+            includeGroupAndSubgroups "net.neoforged"
+            includeGroupAndSubgroups "cpw.mods"
+        }
+    }
 }
 
 dependencies {
-    forge "net.minecraftforge:forge:${rootProject.forge_version}"
+    neoForge "net.neoforged:neoforge:${rootProject.neoforge_version}"
 
-    modImplementation "dev.emi:emi-forge:${rootProject.emi_version}+${rootProject.minecraft_version}"
+    modImplementation "dev.emi:emi-neoforge:${rootProject.emi_version}+${rootProject.minecraft_version}"
 
     minecraftLibraries("org.quiltmc.parsers:json:0.2.1")
     include("org.quiltmc.parsers:json:0.2.1")
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
-    shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
+    shadowCommon(project(path: ":common", configuration: "transformProductionNeoForge")) { transitive = false }
 }
 
 publishMods {
-    displayName = "[Forge/NeoForge ${rootProject.minecraft_version}] ${rootProject.mod_version}"
-    version = "forge-${project.version}"
-    modLoaders.add("forge")
+    displayName = "[NeoForge ${rootProject.minecraft_version}] ${rootProject.mod_version}"
+    version = "neoforge-${project.version}"
     modLoaders.add("neoforge")
 }
 
@@ -54,6 +58,7 @@ processResources {
 shadowJar {
     exclude "fabric.mod.json"
     exclude "architectury.common.json"
+    exclude "emitrades.accesswidener"
 
     configurations = [project.configurations.shadowCommon]
     archiveClassifier = "dev-shadow"

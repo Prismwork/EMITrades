@@ -10,14 +10,20 @@ import dev.emi.emi.api.widget.SlotWidget;
 import dev.emi.emi.api.widget.WidgetHolder;
 import io.github.prismwork.emitrades.EMITradesPlugin;
 import io.github.prismwork.emitrades.util.EntityEmiStack;
+import io.github.prismwork.emitrades.util.ListEmiStack;
 import io.github.prismwork.emitrades.util.TradeProfile;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.EnchantmentLevelEntry;
 import net.minecraft.entity.passive.VillagerEntity;
+import net.minecraft.item.EnchantedBookItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.SuspiciousStewItem;
+import net.minecraft.potion.PotionUtil;
+import net.minecraft.recipe.BrewingRecipeRegistry;
 import net.minecraft.registry.Registries;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
@@ -38,6 +44,7 @@ public class VillagerTrade implements EmiRecipe {
     private final int id;
     private final MutableText title;
 
+    @SuppressWarnings("UnstableApiUsage")
     public VillagerTrade(TradeProfile profile, int id) {
         this.profile = profile;
         this.inputs = new ArrayList<>();
@@ -53,28 +60,44 @@ public class VillagerTrade implements EmiRecipe {
                     .append(" - ").append(Text.translatable("emi.emitrades.profession.lvl." + profile.level()));
         }
         TradeOffers.Factory offer = profile.offer();
-        if (offer instanceof TradeOffers.BuyForOneEmeraldFactory factory) {
-            inputs.add(0, EmiStack.of(factory.buy, factory.price));
+        if (offer instanceof TradeOffers.BuyItemFactory factory) {
+            inputs.add(0, EmiStack.of(factory.stack, factory.price));
             inputs.add(1, EmiStack.EMPTY);
             outputs.add(0, EmiStack.of(Items.EMERALD));
         } else if (offer instanceof TradeOffers.SellItemFactory factory) {
             inputs.add(0, EmiStack.of(Items.EMERALD, factory.price));
             inputs.add(1, EmiStack.EMPTY);
-            outputs.add(0, EmiStack.of(factory.sell, factory.count));
+            outputs.add(0, EmiStack.of(factory.sell));
         } else if (offer instanceof TradeOffers.SellSuspiciousStewFactory factory) {
             inputs.add(0, EmiStack.of(Items.EMERALD, 1));
             inputs.add(1, EmiStack.EMPTY);
             ItemStack stack = new ItemStack(Items.SUSPICIOUS_STEW, 1);
-            SuspiciousStewItem.addEffectToStew(stack, factory.effect, factory.duration);
+            SuspiciousStewItem.addEffectsToStew(stack, factory.stewEffects);
             outputs.add(0, EmiStack.of(stack));
         } else if (offer instanceof TradeOffers.ProcessItemFactory factory) {
             inputs.add(0, EmiStack.of(Items.EMERALD, factory.price));
-            inputs.add(1, EmiStack.of(factory.secondBuy, factory.secondCount));
-            outputs.add(0, EmiStack.of(factory.sell, factory.sellCount));
+            inputs.add(1, EmiStack.of(factory.toBeProcessed));
+            outputs.add(0, EmiStack.of(factory.processed));
         } else if (offer instanceof TradeOffers.SellEnchantedToolFactory factory) {
             inputs.add(0, EmiStack.of(Items.EMERALD, Math.min(factory.basePrice + 5, 64)));
             inputs.add(1, EmiStack.EMPTY);
-            outputs.add(0, EmiStack.of(factory.tool));
+
+            List<EmiStack> out = new ArrayList<>();
+            int enchantability = factory.tool.getItem().getEnchantability();
+            int power = 5 + 15 + 1
+                    + (enchantability / 4 + 1) + (enchantability / 4 + 1);
+            EnchantmentHelper.getPossibleEntries(power, factory.tool, false).forEach(
+                    entry -> {
+                        Enchantment enchantment = entry.enchantment;
+                        for (int i = enchantment.getMinLevel(); i <= enchantment.getMaxLevel(); i++){
+                            ItemStack stack = factory.tool.copy();
+                            stack.addEnchantment(entry.enchantment, i);
+                            out.add(EmiStack.of(stack));
+                        }
+                    }
+            );
+
+            outputs.add(0, new ListEmiStack(out, factory.tool.getCount()));
         } else if (offer instanceof TradeOffers.TypeAwareBuyForOneEmeraldFactory factory) {
             List<EmiStack> stacks = new ArrayList<>();
             factory.map.values().forEach(item -> stacks.add(EmiStack.of(item)));
@@ -84,11 +107,37 @@ public class VillagerTrade implements EmiRecipe {
         } else if (offer instanceof TradeOffers.SellPotionHoldingItemFactory factory) {
             inputs.add(0, EmiStack.of(Items.EMERALD, factory.price));
             inputs.add(1, EmiStack.of(factory.secondBuy, factory.secondCount));
-            outputs.add(0, EmiStack.of(factory.sell, factory.sellCount));
-        } else if (offer instanceof TradeOffers.EnchantBookFactory) {
+
+            List<EmiStack> out = new ArrayList<>();
+            Registries.POTION.stream().filter((potion) ->
+                    !potion.getEffects().isEmpty() && BrewingRecipeRegistry.isBrewable(potion)).forEach(
+                            potion -> {
+                                ItemStack stack = PotionUtil.setPotion(factory.sell, potion);
+                                out.add(EmiStack.of(stack));
+                            }
+            );
+
+            outputs.add(0, new ListEmiStack(out, factory.sellCount));
+        } else if (offer instanceof TradeOffers.EnchantBookFactory factory) {
             inputs.add(0, EmiStack.of(Items.EMERALD, 5));
             inputs.add(1, EmiStack.of(Items.BOOK));
-            outputs.add(0, EmiStack.of(Items.ENCHANTED_BOOK));
+
+            List<EmiStack> out = new ArrayList<>();
+            factory.possibleEnchantments.forEach(
+                    enchantment -> {
+                        int min = Math.max(enchantment.getMinLevel(), factory.minLevel);
+                        int max = Math.min(enchantment.getMaxLevel(), factory.maxLevel);
+
+                        for (int i = min; i <= max; i++) {
+                            ItemStack stack = EnchantedBookItem.forEnchantment(
+                                    new EnchantmentLevelEntry(enchantment, i)
+                            );
+                            out.add(EmiStack.of(stack));
+                        }
+                    }
+            );
+
+            outputs.add(0, new ListEmiStack(out, 1));
         } else if (offer instanceof TradeOffers.SellMapFactory factory) {
             inputs.add(0, EmiStack.of(Items.EMERALD, factory.price));
             inputs.add(1, EmiStack.of(Items.COMPASS));
@@ -177,21 +226,10 @@ public class VillagerTrade implements EmiRecipe {
     private void wrapOutput(WidgetHolder widgets, SlotWidget outputSlot) {
         if (profile.offer() instanceof TradeOffers.SellDyedArmorFactory) {
             outputSlot = outputSlot.appendTooltip(Text.translatable("emi.emitrades.random_colored").formatted(Formatting.YELLOW));
-        } else if (profile.offer() instanceof TradeOffers.SellPotionHoldingItemFactory || profile.offer() instanceof TradeOffers.SellSuspiciousStewFactory) {
+        } else if (profile.offer() instanceof TradeOffers.SellSuspiciousStewFactory) {
             outputSlot = outputSlot.appendTooltip(Text.translatable("emi.emitrades.random_effect").formatted(Formatting.YELLOW));
         } else if (profile.offer() instanceof TradeOffers.SellMapFactory) {
             outputSlot = outputSlot.appendTooltip(Text.translatable("emi.emitrades.random_structure").formatted(Formatting.YELLOW));
-        } else if (profile.offer() instanceof TradeOffers.EnchantBookFactory || profile.offer() instanceof TradeOffers.SellEnchantedToolFactory) {
-            List<Enchantment> list
-                    = Registries.ENCHANTMENT.stream().filter(Enchantment::isAvailableForEnchantedBookOffer).toList();
-            if (!list.isEmpty()) {
-                outputSlot = outputSlot.appendTooltip(Text.translatable("emi.emitrades.enchantments.possible")
-                        .formatted(Formatting.AQUA));
-                for (Enchantment enchantment : list) {
-                    outputSlot = outputSlot.appendTooltip(Text.literal("- ")
-                            .append(Text.translatable(enchantment.getTranslationKey())).formatted(Formatting.GRAY));
-                }
-            }
         }
         widgets.add(outputSlot);
     }

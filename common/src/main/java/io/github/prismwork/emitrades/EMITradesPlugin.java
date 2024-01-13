@@ -53,6 +53,7 @@ public class EMITradesPlugin implements EmiPlugin {
     public static EMITradesConfig.Config CONFIG;
     private static final File CONFIG_FILE = XPlatUtils.getConfigPath().resolve("emitrades.json5").toFile();
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
     public void register(EmiRegistry registry) {
         CONFIG = EMITradesConfig.load(CONFIG_FILE);
@@ -144,7 +145,7 @@ public class EMITradesPlugin implements EmiPlugin {
                 offer instanceof TradeOffers.SellDyedArmorFactory ||
                 offer instanceof TradeOffers.TypeAwareBuyForOneEmeraldFactory ||
                 offer instanceof TradeOffers.SellItemFactory ||
-                offer instanceof TradeOffers.BuyForOneEmeraldFactory ||
+                offer instanceof TradeOffers.BuyItemFactory ||
                 offer instanceof TradeOffers.ProcessItemFactory;
     }
 
@@ -158,7 +159,8 @@ public class EMITradesPlugin implements EmiPlugin {
     }
 
     @ApiStatus.Internal
-    public static class FakeFactory implements TradeOffers.Factory {
+    public static final class FakeFactory
+            implements TradeOffers.Factory {
         public final ItemStack first;
         public final ItemStack second;
         public final ItemStack sell;

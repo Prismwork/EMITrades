@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[47,)"
+loaderVersion = "[1,)"
 issueTrackerURL = "https://github.com/Prismwork/EMITrades/issues"
 license = "MIT"
 
@@ -14,22 +14,22 @@ Villager trades for EMI.
 logoFile = "icon.png"
 
 [[dependencies.emitrades]]
-modId = "forge"
-mandatory = true
-versionRange = "[47,)"
+modId = "neoforge"
+type = "REQUIRED"
+versionRange = "[20.4.72-beta,)"
 ordering = "NONE"
 side = "CLIENT"
 
 [[dependencies.emitrades]]
 modId = "minecraft"
-mandatory = true
-versionRange = "[1.20.1,)"
+type = "REQUIRED"
+versionRange = "[1.20.4,)"
 ordering = "NONE"
 side = "CLIENT"
 
 [[dependencies.emitrades]]
 modId = "emi"
-mandatory = true
+type = "REQUIRED"
 versionRange = "[1.0,)"
 ordering = "NONE"
 side = "CLIENT"
