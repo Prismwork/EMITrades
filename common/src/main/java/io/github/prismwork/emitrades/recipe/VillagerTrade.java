@@ -1,7 +1,5 @@
 package io.github.prismwork.emitrades.recipe;
 
-import dev.emi.emi.api.recipe.EmiRecipe;
-import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
@@ -36,8 +34,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VillagerTrade implements EmiRecipe {
-    private final TradeProfile profile;
+public class VillagerTrade extends AbstractVillagerTrade {
     private final List<EmiIngredient> inputs;
     private final List<EmiStack> outputs;
     private final List<EmiIngredient> catalysts;
@@ -46,7 +43,7 @@ public class VillagerTrade implements EmiRecipe {
 
     @SuppressWarnings("UnstableApiUsage")
     public VillagerTrade(TradeProfile profile, int id) {
-        this.profile = profile;
+        super(profile);
         this.inputs = new ArrayList<>();
         this.outputs = new ArrayList<>();
         this.catalysts = profile.villager() != null ?
@@ -59,7 +56,7 @@ public class VillagerTrade implements EmiRecipe {
             this.title = Text.translatable("entity.minecraft.villager." + profile.profession().id().substring(profile.profession().id().lastIndexOf(":") + 1))
                     .append(" - ").append(Text.translatable("emi.emitrades.profession.lvl." + profile.level()));
         }
-        TradeOffers.Factory offer = profile.offer();
+        TradeOffers.Factory offer = profile.defaultOffer();
         if (offer instanceof TradeOffers.BuyItemFactory factory) {
             inputs.add(0, EmiStack.of(factory.stack, factory.price));
             inputs.add(1, EmiStack.EMPTY);
@@ -163,11 +160,6 @@ public class VillagerTrade implements EmiRecipe {
     }
 
     @Override
-    public EmiRecipeCategory getCategory() {
-        return EMITradesPlugin.VILLAGER_TRADES;
-    }
-
-    @Override
     public @Nullable Identifier getId() {
         return new Identifier("emitrades", "villager_trades/" + profile.profession().id().substring(profile.profession().id().lastIndexOf(":") + 1) + "_" + id);
     }
@@ -224,11 +216,11 @@ public class VillagerTrade implements EmiRecipe {
     }
 
     private void wrapOutput(WidgetHolder widgets, SlotWidget outputSlot) {
-        if (profile.offer() instanceof TradeOffers.SellDyedArmorFactory) {
+        if (profile.defaultOffer() instanceof TradeOffers.SellDyedArmorFactory) {
             outputSlot = outputSlot.appendTooltip(Text.translatable("emi.emitrades.random_colored").formatted(Formatting.YELLOW));
-        } else if (profile.offer() instanceof TradeOffers.SellSuspiciousStewFactory) {
+        } else if (profile.defaultOffer() instanceof TradeOffers.SellSuspiciousStewFactory) {
             outputSlot = outputSlot.appendTooltip(Text.translatable("emi.emitrades.random_effect").formatted(Formatting.YELLOW));
-        } else if (profile.offer() instanceof TradeOffers.SellMapFactory) {
+        } else if (profile.defaultOffer() instanceof TradeOffers.SellMapFactory) {
             outputSlot = outputSlot.appendTooltip(Text.translatable("emi.emitrades.random_structure").formatted(Formatting.YELLOW));
         }
         widgets.add(outputSlot);

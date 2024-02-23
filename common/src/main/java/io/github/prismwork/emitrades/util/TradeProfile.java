@@ -1,11 +1,15 @@
 package io.github.prismwork.emitrades.util;
 
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.entity.passive.MerchantEntity;
 import net.minecraft.village.TradeOffers;
 import net.minecraft.village.VillagerProfession;
 
+// TODO: internal rework for less boilerplate
 public interface TradeProfile {
-    TradeOffers.Factory offer();
+    Int2ObjectMap<TradeOffers.Factory[]> offers();
+
+    TradeOffers.Factory defaultOffer();
 
     VillagerProfession profession();
 
@@ -18,23 +22,26 @@ public interface TradeProfile {
                        int level,
                        MerchantEntity villager) implements TradeProfile {
         @Override
-        public TradeOffers.Factory offer() {
-            return offer;
+        public Int2ObjectMap<TradeOffers.Factory[]> offers() {
+            throw new UnsupportedOperationException();
         }
 
+        public TradeOffers.Factory defaultOffer() {
+            return offer;
+        }
+    }
+
+    record ProfessionImpl(VillagerProfession profession,
+                          Int2ObjectMap<TradeOffers.Factory[]> offers,
+                          MerchantEntity villager) implements TradeProfile {
         @Override
-        public VillagerProfession profession() {
-            return profession;
+        public TradeOffers.Factory defaultOffer() {
+            throw new UnsupportedOperationException();
         }
 
         @Override
         public int level() {
-            return level;
-        }
-
-        @Override
-        public MerchantEntity villager() {
-            return villager;
+            throw new UnsupportedOperationException();
         }
     }
 }
