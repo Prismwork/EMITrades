@@ -1,0 +1,70 @@
+accessWidener v2 named
+
+###### Trade Offers (Thanks Mojang for not letting their whole shit public) ######
+#? if >=1.21 {
+accessible field net/minecraft/world/entity/npc/VillagerTrades$EnchantBookForEmeralds tradeableEnchantments Lnet/minecraft/tags/TagKey;
+#? } else {
+#accessible field net/minecraft/world/entity/npc/VillagerTrades$EnchantBookForEmeralds tradeableEnchantments Ljava/util/List;
+#? }
+accessible field net/minecraft/world/entity/npc/VillagerTrades$EnchantBookForEmeralds minLevel I
+accessible field net/minecraft/world/entity/npc/VillagerTrades$EnchantBookForEmeralds maxLevel I
+accessible field net/minecraft/world/entity/npc/VillagerTrades$EnchantBookForEmeralds villagerXp I
+#? if >=1.20.6 {
+accessible field net/minecraft/world/entity/npc/VillagerTrades$EmeraldForItems itemStack Lnet/minecraft/world/item/trading/ItemCost;
+#? } else {
+#accessible field net/minecraft/world/entity/npc/VillagerTrades$EmeraldForItems itemStack Lnet/minecraft/world/item/ItemStack;
+#? }
+accessible field net/minecraft/world/entity/npc/VillagerTrades$EmeraldForItems emeraldAmount I
+accessible field net/minecraft/world/entity/npc/VillagerTrades$EmeraldForItems villagerXp I
+accessible field net/minecraft/world/entity/npc/VillagerTrades$EmeraldForItems maxUses I
+accessible field net/minecraft/world/entity/npc/VillagerTrades$ItemsForEmeralds itemStack Lnet/minecraft/world/item/ItemStack;
+accessible field net/minecraft/world/entity/npc/VillagerTrades$ItemsForEmeralds emeraldCost I
+accessible field net/minecraft/world/entity/npc/VillagerTrades$ItemsForEmeralds villagerXp I
+accessible field net/minecraft/world/entity/npc/VillagerTrades$ItemsForEmeralds maxUses I
+#? if >=1.20.6 {
+accessible field net/minecraft/world/entity/npc/VillagerTrades$SuspiciousStewForEmerald effects Lnet/minecraft/world/item/component/SuspiciousStewEffects;
+#? } else {
+#accessible field net/minecraft/world/entity/npc/VillagerTrades$SuspiciousStewForEmerald effects Ljava/util/List;
+#? }
+accessible field net/minecraft/world/entity/npc/VillagerTrades$SuspiciousStewForEmerald xp I
+#? if >=1.20.6 {
+accessible field net/minecraft/world/entity/npc/VillagerTrades$ItemsAndEmeraldsToItems fromItem Lnet/minecraft/world/item/trading/ItemCost;
+#? } else {
+#accessible field net/minecraft/world/entity/npc/VillagerTrades$ItemsAndEmeraldsToItems fromItem Lnet/minecraft/world/item/ItemStack;
+#? }
+accessible field net/minecraft/world/entity/npc/VillagerTrades$ItemsAndEmeraldsToItems emeraldCost I
+accessible field net/minecraft/world/entity/npc/VillagerTrades$ItemsAndEmeraldsToItems toItem Lnet/minecraft/world/item/ItemStack;
+accessible field net/minecraft/world/entity/npc/VillagerTrades$ItemsAndEmeraldsToItems villagerXp I
+#? if >=1.21 {
+accessible field net/minecraft/world/entity/npc/VillagerTrades$ItemsAndEmeraldsToItems enchantmentProvider Ljava/util/Optional;
+#? }
+accessible field net/minecraft/world/entity/npc/VillagerTrades$ItemsAndEmeraldsToItems maxUses I
+accessible field net/minecraft/world/entity/npc/VillagerTrades$EnchantedItemForEmeralds itemStack Lnet/minecraft/world/item/ItemStack;
+accessible field net/minecraft/world/entity/npc/VillagerTrades$EnchantedItemForEmeralds baseEmeraldCost I
+accessible field net/minecraft/world/entity/npc/VillagerTrades$EnchantedItemForEmeralds villagerXp I
+accessible field net/minecraft/world/entity/npc/VillagerTrades$EnchantedItemForEmeralds maxUses I
+accessible field net/minecraft/world/entity/npc/VillagerTrades$EmeraldsForVillagerTypeItem trades Ljava/util/Map;
+accessible field net/minecraft/world/entity/npc/VillagerTrades$EmeraldsForVillagerTypeItem cost I
+accessible field net/minecraft/world/entity/npc/VillagerTrades$EmeraldsForVillagerTypeItem villagerXp I
+accessible field net/minecraft/world/entity/npc/VillagerTrades$EmeraldsForVillagerTypeItem maxUses I
+accessible field net/minecraft/world/entity/npc/VillagerTrades$TippedArrowForItemsAndEmeralds toItem Lnet/minecraft/world/item/ItemStack;
+accessible field net/minecraft/world/entity/npc/VillagerTrades$TippedArrowForItemsAndEmeralds toCount I
+accessible field net/minecraft/world/entity/npc/VillagerTrades$TippedArrowForItemsAndEmeralds emeraldCost I
+accessible field net/minecraft/world/entity/npc/VillagerTrades$TippedArrowForItemsAndEmeralds villagerXp I
+accessible field net/minecraft/world/entity/npc/VillagerTrades$TippedArrowForItemsAndEmeralds fromItem Lnet/minecraft/world/item/Item;
+accessible field net/minecraft/world/entity/npc/VillagerTrades$TippedArrowForItemsAndEmeralds fromCount I
+accessible field net/minecraft/world/entity/npc/VillagerTrades$TippedArrowForItemsAndEmeralds maxUses I
+accessible field net/minecraft/world/entity/npc/VillagerTrades$TreasureMapForEmeralds emeraldCost I
+accessible field net/minecraft/world/entity/npc/VillagerTrades$TreasureMapForEmeralds destination Lnet/minecraft/tags/TagKey;
+accessible field net/minecraft/world/entity/npc/VillagerTrades$TreasureMapForEmeralds displayName Ljava/lang/String;
+#? if >=1.20.6 {
+accessible field net/minecraft/world/entity/npc/VillagerTrades$TreasureMapForEmeralds destinationType Lnet/minecraft/core/Holder;
+#? } else {
+#accessible field net/minecraft/world/entity/npc/VillagerTrades$TreasureMapForEmeralds destinationType Lnet/minecraft/world/level/saveddata/maps/MapDecoration$Type;
+#? }
+accessible field net/minecraft/world/entity/npc/VillagerTrades$TreasureMapForEmeralds villagerXp I
+accessible field net/minecraft/world/entity/npc/VillagerTrades$TreasureMapForEmeralds maxUses I
+accessible field net/minecraft/world/entity/npc/VillagerTrades$DyedArmorForEmeralds item Lnet/minecraft/world/item/Item;
+accessible field net/minecraft/world/entity/npc/VillagerTrades$DyedArmorForEmeralds value I
+accessible field net/minecraft/world/entity/npc/VillagerTrades$DyedArmorForEmeralds villagerXp I
+accessible field net/minecraft/world/entity/npc/VillagerTrades$DyedArmorForEmeralds maxUses I
