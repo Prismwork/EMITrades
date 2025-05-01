@@ -14,7 +14,11 @@ modstitch {
 
     // Alternatively use stonecutter.eval if you have a lot of versions to target.
     // https://stonecutter.kikugie.dev/stonecutter/guide/setup#checking-versions
-    javaTarget = 22
+    javaTarget = when (minecraft) {
+        "1.20.1", "1.20.4" -> 17
+        "1.20.6", "1.21.1" -> 21
+        else -> throw IllegalArgumentException("Please store the java version for ${property("deps.minecraft")} in build.gradle.kts!")
+    }
 
     // If parchment doesnt exist for a version yet you can safely
     // omit the "deps.parchment" property from your versioned gradle.properties
@@ -46,6 +50,8 @@ modstitch {
                 "1.21.1" -> 46
                 else -> throw IllegalArgumentException("Please store the resource pack version for ${property("deps.minecraft")} in build.gradle.kts! https://minecraft.wiki/w/Pack_format")
             }.toString())
+            put("emi_version", property("deps.emi") as String)
+            put("mc_version", minecraft)
         }
     }
 
@@ -57,7 +63,7 @@ modstitch {
 
         // Configure loom like normal in this block.
         configureLoom {
-            accessWidenerPath = file("../../src/main/resources/emitrades.accesswidener")
+            accessWidenerPath = rootProject.file("/src/main/resources/emitrades-aw/$minecraft.accesswidener")
         }
     }
 
@@ -76,9 +82,15 @@ modstitch {
         // This block configures the `neoforge` extension that MDG exposes by default,
         // you can configure MDG like normal from here
         configureNeoforge {
+            validateAccessTransformers = false
+
             runs.all {
                 disableIdeRun()
             }
+        }
+
+        tasks.named("createMinecraftArtifacts") {
+            dependsOn("stonecutterGenerate")
         }
     }
 
@@ -87,7 +99,7 @@ modstitch {
         // true, it will automatically be generated.
         addMixinsToModManifest = true
 
-        configs.register("emitrades")
+        // configs.register("emitrades")
 
         // Most of the time you wont ever need loader specific mixins.
         // If you do, simply make the mixin file and add it like so for the respective loader:
@@ -128,4 +140,12 @@ dependencies {
     }
 
     // Anything else in the dependencies block will be used for all platforms.
+}
+
+tasks.named("generateModMetadata") {
+    dependsOn("stonecutterGenerate")
+}
+
+tasks.withType<JavaCompile> {
+    dependsOn("stonecutterGenerate")
 }

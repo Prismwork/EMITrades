@@ -1,8 +1,8 @@
 {
   "emi.category.emitrades.villager_trades": "村民交易",
 
-  "emi.emitrades.random_colored": "随机颜色",
-  "emi.emitrades.random_structure": "随机结构",
+  "emi.emitrades.random_colored": "由2种染料（可能相同）染成随机颜色",
+  "emi.emitrades.structure": "地图类型：",
   "emi.emitrades.random_effect": "随机状态效果",
   "emi.emitrades.enchantments.possible": "可能的附魔",
 

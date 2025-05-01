@@ -4,11 +4,18 @@
   "name": "${mod_name}",
   "version": "${mod_version}",
   "description": "${mod_description}",
-  "environment": "*",
+  "environment": "client",
   "icon": "icon.png",
+  "contact": {
+    "issues": "${mod_issue_tracker}"
+  },
   "entrypoints": {
     "emi": [
       "moe.prwk.emitrades.EMITradesPlugin"
     ]
-  }
+  },
+  "depends": {
+    "emi": ">=${emi_version}"
+  },
+  "accesswidener": "emitrades-aw/${mc_version}.accesswidener"
 }

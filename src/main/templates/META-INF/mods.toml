@@ -15,8 +15,15 @@ license = "${mod_license}"
     modId = "neoforge"
     mandatory = true
     ordering = "NONE"
-    side = "BOTH"
+    side = "CLIENT"
 
 [[dependencies.${mod_id}]]
     modId = "minecraft"
     mandatory = true
+    side = "CLIENT"
+
+[[dependencies.${mod_id}]]
+    modId = "emi"
+    versionRange = "[${emi_version},)"
+    mandatory = true
+    side = "CLIENT"
