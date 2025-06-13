@@ -63,7 +63,7 @@ modstitch {
 
         // Configure loom like normal in this block.
         configureLoom {
-            accessWidenerPath = rootProject.file("/src/main/resources/emitrades-aw/$minecraft.accesswidener")
+            accessWidenerPath = rootProject.file("./src/main/resources/emitrades-aw/$minecraft.accesswidener")
         }
     }
 
@@ -99,7 +99,7 @@ modstitch {
         // true, it will automatically be generated.
         addMixinsToModManifest = true
 
-        // configs.register("emitrades")
+        configs.register("emitrades")
 
         // Most of the time you wont ever need loader specific mixins.
         // If you do, simply make the mixin file and add it like so for the respective loader:

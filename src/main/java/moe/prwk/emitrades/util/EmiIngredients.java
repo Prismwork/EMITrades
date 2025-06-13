@@ -1,7 +1,7 @@
 package moe.prwk.emitrades.util;
 
+import com.mojang.blaze3d.platform.Lighting;
 import dev.emi.emi.EmiRenderHelper;
-import dev.emi.emi.api.render.EmiRender;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.runtime.EmiDrawContext;
@@ -11,8 +11,9 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 //? if >=1.20.6 {
 import net.minecraft.core.component.DataComponentPatch;
-//?}
-import net.minecraft.nbt.CompoundTag;
+//?} else {
+/*import net.minecraft.nbt.CompoundTag;
+*///?}
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.apache.commons.compress.utils.Lists;
@@ -96,16 +97,20 @@ public final class EmiIngredients {
         public void render(GuiGraphics draw, int x, int y, float delta, int flags) {
             Font textRenderer = Minecraft.getInstance().font;
             EmiDrawContext context = EmiDrawContext.wrap(draw);
-            if ((flags & RENDER_ICON) != 0) {
-                stack.render(draw, x, y, delta, ~RENDER_AMOUNT);
+            Lighting.setupFor3DItems();
+            draw.renderFakeItem(stack.getItemStack(), x, y);
+            draw.renderItemDecorations(textRenderer, stack.getItemStack(), x, y, "");
+            boolean rangeEquals = Objects.equals(amountRange.getMinimum(), amountRange.getMaximum());
+            String count = !rangeEquals ?
+                    amountRange.toString("%1$s-%2$s") : amountRange.toString("%1$s");
+            if (!rangeEquals) {
+                context.matrices().scale(0.5f, 0.5f, 0.5f);
+                context.matrices().translate(38, 28, 200);
             }
-            if ((flags & RENDER_AMOUNT) != 0) {
-                String count = !Objects.equals(amountRange.getMinimum(), amountRange.getMaximum()) ?
-                        amountRange.toString("%1$s-%2$s") : amountRange.toString("%1$s");
-                EmiRenderHelper.renderAmount(context, x + 14 - textRenderer.width(count), y, Component.literal(count));
-            }
-            if ((flags & RENDER_INGREDIENT) != 0) {
-                EmiRender.renderIngredientIcon(this, draw, x, y);
+            EmiRenderHelper.renderAmount(context, x + 14 - textRenderer.width(count), y, Component.literal(count));
+            if (!rangeEquals) {
+                context.matrices().translate(-38, -28, -200);
+                context.matrices().scale(2f, 2f, 2f);
             }
         }
 
