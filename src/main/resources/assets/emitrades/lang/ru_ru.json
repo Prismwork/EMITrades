@@ -1,10 +1,11 @@
 {
-  "emi.category.emitrades.villager_trades": "Торговля",
+  "emi.category.emitrades.villager_trades": "Торговля с крестьянами",
 
-  "emi.emitrades.random_colored": "Случайный цвет",
-  "emi.emitrades.random_structure": "Случайная структура",
-  "emi.emitrades.random_effect": "Случайный эффект",
-  "emi.emitrades.enchantments.possible": "Возможные зачарования:",
+  "emi.emitrades.random_colored": "Случайный цвет из двух красителей (возможно, одинаковых)",
+  "emi.emitrades.structure": "Тип карты: ",
+  "emi.emitrades.random_effect": "Случайные эффекты",
+  "emi.emitrades.enchantments.possible": "Возможные чары:",
+
   "emi.emitrades.profession.lvl.0": "Новичок",
   "emi.emitrades.profession.lvl.1": "Подмастерье",
   "emi.emitrades.profession.lvl.2": "Ремесленник",
