@@ -6,11 +6,11 @@
   "emi.emitrades.random_effect": "Случайные эффекты",
   "emi.emitrades.enchantments.possible": "Возможные чары:",
 
-  "emi.emitrades.profession.lvl.1": "Новичок",
-  "emi.emitrades.profession.lvl.2": "Подмастерье",
-  "emi.emitrades.profession.lvl.3": "Ремесленник",
-  "emi.emitrades.profession.lvl.4": "Эксперт",
-  "emi.emitrades.profession.lvl.5": "Мастер",
+  "emi.emitrades.profession.lvl.0": "Новичок",
+  "emi.emitrades.profession.lvl.1": "Подмастерье",
+  "emi.emitrades.profession.lvl.2": "Ремесленник",
+  "emi.emitrades.profession.lvl.3": "Эксперт",
+  "emi.emitrades.profession.lvl.4": "Мастер",
 
   "emi.emitrades.placeholder.wandering_trader": "Странствующий торговец"
 }
